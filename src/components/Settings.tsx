@@ -10,6 +10,8 @@ type PropsType = {
     seterMinCount:(newValue:number)=>void
     seterMaxCount:(newValue:number)=>void
     setCounter:()=>void
+    disabledSetButton:boolean
+    setDisabledSetButton:(value:boolean)=>void
 }
 
 const Settings:React.FC<PropsType> = (
@@ -19,9 +21,10 @@ const Settings:React.FC<PropsType> = (
         seterMinCount,
         seterMaxCount,
         setCounter,
+        disabledSetButton,
+        setDisabledSetButton
     }) => {
 
-    const [disabledSetButton, setDisabledSetButton] = useState(true);
 
     const seterMaxCountHandler = (newValue:number) => {
         seterMaxCount(newValue);

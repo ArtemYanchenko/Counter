@@ -1,0 +1,76 @@
+:root {
+    --color-primary: #8eee01;
+    --color-secondary: red;
+}
+
+.App {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: grey;
+    gap: 80px;
+}
+
+.counterWrapper {
+    border: 3px solid var(--color-primary);
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 25px;
+    height: 280px;
+}
+
+.display {
+    height: 70px;
+    font-size: 55px;
+    color: white;
+    text-align: center;
+}
+
+.redDisplay {
+    color: var(--color-secondary);
+    font-size: 65px;
+}
+
+.infoMessage{
+    font-size: 20px;
+}
+
+.buttonWrapper {
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 20px 50px;
+    border: 3px solid var(--color-primary);
+    border-radius: 5px;
+    display: flex;
+    gap: 20px;
+
+}
+
+button {
+    background-color: var(--color-primary);
+    border: 0px;
+    border-radius: 5px;
+    font-size: 30px;
+    color: white;
+}
+
+button:active {
+    opacity: 0.6;
+}
+
+button:disabled {
+    background-color: var(--color-secondary);
+    color: grey;
+}
+
+
+.errorInput {
+    background-color: red;
+}

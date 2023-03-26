@@ -12,13 +12,12 @@ function App() {
     const [minCount, setMinCount] = useState<number>(0);
     const [maxCount, setMaxCount] = useState<number>(5);
     const [count, setCount] = useState<number>(minCount)
+    const [disabledSetButton, setDisabledSetButton] = useState(true);
+
     const [infoMessage, setInfoMessage] = useState(false)
 
 
 
-
-    const [errorMin, setErrorMin] = useState(false)
-    const [errorMax, setErrorMax] = useState(false)
     const incrementCount = () => {
         setCount(count + 1)
     }
@@ -42,15 +41,9 @@ function App() {
         setInfoMessage(false)
     }
 
-    const disabledInc = count >= maxCount;
-    const disabledReset = count <= minCount;
-
-
-    if (maxCount <= minCount) {
-        setErrorMax(true)
-    }
-
-
+    const disabledInc = count >= maxCount || !disabledSetButton;
+    const disabledReset = count <= minCount || !disabledSetButton;
+    
     return (
         <div className={classes.App}>
             <Settings
@@ -59,6 +52,8 @@ function App() {
                 seterMinCount={seterMinCount}
                 seterMaxCount={seterMaxCount}
                 setCounter={setCounter}
+                disabledSetButton={disabledSetButton}
+                setDisabledSetButton={setDisabledSetButton}
             />
             <div className={classes.counterWrapper}>
                 <Display count={count}
