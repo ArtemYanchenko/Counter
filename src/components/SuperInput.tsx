@@ -5,6 +5,7 @@ type PropsType = {
     name:string
     value:number
     callBack:(newValue:number)=>void
+    error:boolean
 }
 
 const SuperInput:React.FC<PropsType> = (
@@ -12,6 +13,7 @@ const SuperInput:React.FC<PropsType> = (
         name,
         value,
         callBack,
+        error,
     }) => {
 
     const onChangeInputHandler = (e:ChangeEvent<HTMLInputElement>) => {
@@ -21,6 +23,7 @@ const SuperInput:React.FC<PropsType> = (
         <div>
             <span>{name}: </span>
             <input
+                className={error ? classes.errorInput : ''}
                 type="number"
                 value={value}
                 onChange={onChangeInputHandler}/>

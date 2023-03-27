@@ -8,42 +8,56 @@ import Settings from './components/Settings';
 function App() {
 
 
-
     const [minCount, setMinCount] = useState<number>(0);
     const [maxCount, setMaxCount] = useState<number>(5);
     const [count, setCount] = useState<number>(minCount)
-    const [disabledSetButton, setDisabledSetButton] = useState(true);
+    const [editMode,setEditMode] = useState(false)
 
-    const [infoMessage, setInfoMessage] = useState(false)
+    let errorMax = false;
+    let errorMin = false;
+    let infoMessage = '';
+
+    // if (minCount >= maxCount || minCount<0) {
+    //     errorMin = true;
+    //     errorMax = true;
+    //     infoMessage = 'incorrent range';
+    // } else if (editMode){
+    //     infoMessage = 'press set';
+    // }
 
 
-
-    const incrementCount = () => {
-        setCount(count + 1)
+    if(minCount<0){
+        errorMin = true;
+        infoMessage = 'incorrent range';
+    } else if (minCount>=maxCount){
+        errorMin = true;
+        infoMessage = 'incorrent range';
+    } else if (editMode){
+        infoMessage = 'press set'
     }
 
-    const resetCount = () => {
-        setCount(minCount)
-    }
+
+    const incrementCount = () => setCount(count + 1);
+    const resetCount = () => setCount(minCount);
 
     const seterMaxCount = (newValue: number) => {
         setMaxCount(newValue);
-        setInfoMessage(true);
+        setEditMode(true);
     }
 
     const seterMinCount = (newValue: number) => {
         setMinCount(newValue);
-        setInfoMessage(true);
+        setEditMode(true);
     }
 
     const setCounter = () => {
         setCount(minCount);
-        setInfoMessage(false)
+        setEditMode(false)
     }
 
-    const disabledInc = count >= maxCount || !disabledSetButton;
-    const disabledReset = count <= minCount || !disabledSetButton;
-    
+    let disabledInc = (count >= maxCount) || editMode;
+    let disabledReset = (count <= minCount) || editMode;
+
     return (
         <div className={classes.App}>
             <Settings
@@ -52,8 +66,9 @@ function App() {
                 seterMinCount={seterMinCount}
                 seterMaxCount={seterMaxCount}
                 setCounter={setCounter}
-                disabledSetButton={disabledSetButton}
-                setDisabledSetButton={setDisabledSetButton}
+                disableButtonSet={!editMode}
+                errorMax={errorMax}
+                errorMin={errorMin}
             />
             <div className={classes.counterWrapper}>
                 <Display count={count}
