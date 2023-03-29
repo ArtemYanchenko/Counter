@@ -1,5 +1,5 @@
 import React, {ChangeEvent} from 'react';
-import classes from '../App.module.css';
+import classes from '../../App.module.css';
 
 type PropsType = {
     name:string

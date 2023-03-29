@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import classes from './App.module.css'
-import SuperButton from './components/SuperButton';
-import SuperInput from './components/SuperInput';
-import Display from './components/Display';
-import Settings from './components/Settings';
+import CounterSettings from './components/CounterSettings/CounterSettings';
+import CounterDisplay from './components/CounterDisplay/CounterDisplay';
 
 function App() {
 
@@ -50,11 +48,14 @@ function App() {
     if (editMode) {
         infoMessage = 'press set'
     }
+    if (minCount >= maxCount || minCount < 0 || maxCount < 0) {
+        infoMessage = 'incorrect range!'
+    }
 
 
     return (
         <div className={classes.App}>
-            <Settings
+            <CounterSettings
                 minCount={minCount}
                 maxCount={maxCount}
                 seterMinCount={seterMinCount}
@@ -62,25 +63,17 @@ function App() {
                 setCounter={setCounter}
                 disableButtonSet={!editMode}
             />
+            <CounterDisplay
+                count={count}
+                maxCount={maxCount}
+                infoMessage={infoMessage}
+                incrementCount={incrementCount}
+                resetCount={resetCount}
+                disabledInc={disabledInc}
+                disabledReset={disabledReset}
+            />
 
-            <div className={classes.counterWrapper}>
-                <Display count={count}
-                         infoMessage={infoMessage}
-                         maxCount={maxCount}
-                />
-                <div className={classes.buttonWrapper}>
-                    <SuperButton
-                        name="inc"
-                        disabled={disabledInc}
-                        callBack={incrementCount}
-                    />
-                    <SuperButton
-                        name="reset"
-                        disabled={disabledReset}
-                        callBack={resetCount}
-                    />
-                </div>
-            </div>
+
         </div>
 
     );

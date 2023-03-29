@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import classes from '../App.module.css';
+import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
-import SuperButton from './SuperButton';
+import SuperButton from '../SuperButton';
 
 
 type PropsType = {
@@ -13,7 +13,7 @@ type PropsType = {
     disableButtonSet: boolean
 }
 
-const Settings: React.FC<PropsType> = (
+const CounterSettings: React.FC<PropsType> = (
     {
         minCount,
         maxCount,
@@ -29,6 +29,10 @@ const Settings: React.FC<PropsType> = (
 
     if (minCount >= maxCount) {
         errorMin = true;
+        errorMax = true;
+        disableButtonSet = true;
+    }
+    if (maxCount < 0) {
         errorMax = true;
         disableButtonSet = true;
     }
@@ -71,4 +75,4 @@ const Settings: React.FC<PropsType> = (
     );
 };
 
-export default Settings;
+export default CounterSettings;
