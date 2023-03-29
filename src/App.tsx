@@ -7,14 +7,13 @@ import Settings from './components/Settings';
 
 function App() {
 
-// localStorage.clear();
-
-    const [minCount, setMinCount] = useState<number>(0);
-    const [maxCount, setMaxCount] = useState<number>(5);
+    const [minCount, setMinCount] = useState<number>(0)
+    const [maxCount, setMaxCount] = useState<number>(5)
     const [count, setCount] = useState<number>(minCount)
-    const [editMode,setEditMode] = useState(false)
+    const [editMode, setEditMode] = useState<boolean>(false)
+    let infoMessage = '';
 
-    useEffect(()=>{
+    useEffect(() => {
         const min = localStorage.getItem('minValue')
         min && setMinCount(+min)
 
@@ -22,51 +21,36 @@ function App() {
         max && setMaxCount(+max)
 
         min && setCount(+min);
-    },[])
-
-
-    let infoMessage = '';
-
-    if(editMode) {
-        infoMessage = 'press set'
-    }
-    // editMode ? infoMessage = 'press set' : '';
-
-    const [errorInput,setErrorInput] = useState(false)
+    }, [])
 
     const incrementCount = () => setCount(count + 1);
     const resetCount = () => setCount(minCount);
 
     const seterMaxCount = (newValue: number) => {
-        if(newValue<minCount) {
-            setErrorInput(true)
-        }else {
-            setErrorInput(false)
         setMaxCount(newValue);
         setEditMode(true);
-    }}
+    }
 
     const seterMinCount = (newValue: number) => {
-        if (newValue > maxCount || newValue < 0) {
-            setErrorInput(true)
-        }
-        else {
-            setErrorInput(false)
-            setMinCount(newValue);
-            setEditMode(true);
-        }
+        setMinCount(newValue);
+        setEditMode(true);
+
     }
-    // переписать функции seterMin & seterMax
 
     const setCounter = () => {
         setCount(minCount);
         setEditMode(false)
-        localStorage.setItem('minValue',JSON.stringify(minCount))
-        localStorage.setItem('maxValue',JSON.stringify(maxCount))
+        localStorage.setItem('minValue', JSON.stringify(minCount))
+        localStorage.setItem('maxValue', JSON.stringify(maxCount))
     }
 
     let disabledInc = (count >= maxCount) || editMode;
     let disabledReset = (count <= minCount) || editMode;
+
+    if (editMode) {
+        infoMessage = 'press set'
+    }
+
 
     return (
         <div className={classes.App}>
@@ -77,9 +61,8 @@ function App() {
                 seterMaxCount={seterMaxCount}
                 setCounter={setCounter}
                 disableButtonSet={!editMode}
-                errorMax={errorInput}
-                errorMin={errorInput}
             />
+
             <div className={classes.counterWrapper}>
                 <Display count={count}
                          infoMessage={infoMessage}

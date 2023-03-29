@@ -5,17 +5,15 @@ import SuperButton from './SuperButton';
 
 
 type PropsType = {
-    minCount:number
-    maxCount:number
-    seterMinCount:(newValue:number)=>void
-    seterMaxCount:(newValue:number)=>void
-    setCounter:()=>void
-    disableButtonSet:boolean
-    errorMax:boolean
-    errorMin:boolean
+    minCount: number
+    maxCount: number
+    seterMinCount: (newValue: number) => void
+    seterMaxCount: (newValue: number) => void
+    setCounter: () => void
+    disableButtonSet: boolean
 }
 
-const Settings:React.FC<PropsType> = (
+const Settings: React.FC<PropsType> = (
     {
         minCount,
         maxCount,
@@ -23,16 +21,27 @@ const Settings:React.FC<PropsType> = (
         seterMaxCount,
         setCounter,
         disableButtonSet,
-        errorMax,
-        errorMin,
     }) => {
 
+    let errorMin = false;
+    let errorMax = false
 
 
-    const seterMaxCountHandler = (newValue:number) => {
+    if (minCount >= maxCount) {
+        errorMin = true;
+        errorMax = true;
+        disableButtonSet = true;
+    }
+    if (minCount < 0) {
+        errorMin = true;
+        disableButtonSet = true;
+    }
+
+
+    const seterMaxCountHandler = (newValue: number) => {
         seterMaxCount(newValue);
     }
-    const seterMinCountHandler = (newValue:number) => {
+    const seterMinCountHandler = (newValue: number) => {
         seterMinCount(newValue);
     }
 
@@ -53,7 +62,9 @@ const Settings:React.FC<PropsType> = (
             <div className={classes.buttonWrapper}>
                 <SuperButton name="set"
                              disabled={disableButtonSet}
-                             callBack={() => {setCounter()}}
+                             callBack={() => {
+                                 setCounter()
+                             }}
                 />
             </div>
         </div>
