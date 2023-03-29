@@ -27,18 +27,14 @@ const Settings:React.FC<PropsType> = (
         errorMin,
     }) => {
 
+
+
     const seterMaxCountHandler = (newValue:number) => {
         seterMaxCount(newValue);
     }
     const seterMinCountHandler = (newValue:number) => {
         seterMinCount(newValue);
     }
-
-    const setCounterHandler = () => {
-        setCounter();
-    }
-
-
 
     return (
         <div className={classes.counterWrapper}>
@@ -57,7 +53,7 @@ const Settings:React.FC<PropsType> = (
             <div className={classes.buttonWrapper}>
                 <SuperButton name="set"
                              disabled={disableButtonSet}
-                             callBack={setCounterHandler}
+                             callBack={() => {setCounter()}}
                 />
             </div>
         </div>
