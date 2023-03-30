@@ -1,7 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
 import SuperButton from '../SuperButton';
+import {createDiffieHellman} from 'crypto';
 
 
 type PropsType = {
@@ -27,20 +28,37 @@ const CounterSettings: React.FC<PropsType> = (
     let errorMax = false
 
 
-    if (minCount >= maxCount) {
-        errorMin = true;
-        errorMax = true;
+    // if (minCount >= maxCount) {
+    //     errorMin = true;
+    //     errorMax = true;
+    //     disableButtonSet = true;
+    // }
+    // if (maxCount < 0) {
+    //     errorMax = true;
+    //     disableButtonSet = true;
+    // }
+    // if (minCount < 0) {
+    //     errorMin = true;
+    //     disableButtonSet = true;
+    // }
+
+    const returnErrorTrue = () => {
         disableButtonSet = true;
-    }
-    if (maxCount < 0) {
-        errorMax = true;
-        disableButtonSet = true;
-    }
-    if (minCount < 0) {
-        errorMin = true;
-        disableButtonSet = true;
+        return true
     }
 
+    const checkInputError = (value: number | number[]) => {
+
+        if (Array.isArray(value)) {
+            if (value[0] >= value[1]) {
+               return returnErrorTrue()
+            }
+        }
+        if (value < 0) {
+            return returnErrorTrue()
+        }
+        return false
+    }
 
     const seterMaxCountHandler = (newValue: number) => {
         seterMaxCount(newValue);
@@ -54,13 +72,13 @@ const CounterSettings: React.FC<PropsType> = (
             <SuperInput name="max value"
                         value={maxCount}
                         callBack={seterMaxCountHandler}
-                        error={errorMax}
+                        error={checkInputError(maxCount) || checkInputError([minCount, maxCount])}
             />
 
             <SuperInput name="min value"
                         value={minCount}
                         callBack={seterMinCountHandler}
-                        error={errorMin}
+                        error={checkInputError(minCount) || checkInputError([minCount, maxCount])}
             />
 
             <div className={classes.buttonWrapper}>

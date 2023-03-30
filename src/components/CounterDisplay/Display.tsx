@@ -15,7 +15,7 @@ const Display: React.FC<PropsType> = (
     }) => {
     return (
         <div className={classes.display}>
-            {infoMessage === ''
+            {!infoMessage
                 ? <span className={count >= maxCount ? classes.redDisplay : ''}>{count}</span>
                 : <span className={classes.infoMessage}>{infoMessage}</span>
             }
