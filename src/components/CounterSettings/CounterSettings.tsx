@@ -3,26 +3,25 @@ import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
 import SuperButton from '../SuperButton';
 import {createDiffieHellman} from 'crypto';
-import {useDispatch} from 'react-redux';
-import {setMaxCountAC, setMinCountAC, toggleEditModeAC} from '../../redux/counterReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {CounterType, setMaxCountAC, setMinCountAC, toggleEditModeAC} from '../../redux/counterReducer';
+import {AppRootStateType} from '../../redux/store';
 
 
 type PropsType = {
-    minCount: number
-    maxCount: number
     setCounter: () => void
     disableButtonSet: boolean
 }
 
 const CounterSettings: React.FC<PropsType> = (
     {
-        minCount,
-        maxCount,
         setCounter,
         disableButtonSet,
     }) => {
 
     const dispatch = useDispatch()
+    const counter = useSelector<AppRootStateType,CounterType>(state => state.counter)
+
 
     const returnErrorTrue = () => {
         disableButtonSet = true;
@@ -55,15 +54,15 @@ const CounterSettings: React.FC<PropsType> = (
     return (
         <div className={classes.counterWrapper}>
             <SuperInput name="max value"
-                        value={maxCount}
+                        value={counter.maxCount}
                         callBack={seterMaxCount}
-                        error={checkInputError(maxCount) || checkInputError([minCount, maxCount])}
+                        error={checkInputError(counter.maxCount) || checkInputError([counter.minCount, counter.maxCount])}
             />
 
             <SuperInput name="min value"
-                        value={minCount}
+                        value={counter.minCount}
                         callBack={seterMinCount}
-                        error={checkInputError(minCount) || checkInputError([minCount, maxCount])}
+                        error={checkInputError(counter.minCount) || checkInputError([counter.minCount, counter.maxCount])}
             />
 
             <div className={classes.buttonWrapper}>

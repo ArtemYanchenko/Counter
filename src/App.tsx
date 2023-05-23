@@ -4,16 +4,14 @@ import CounterSettings from './components/CounterSettings/CounterSettings';
 import CounterDisplay from './components/CounterDisplay/CounterDisplay';
 import {useDispatch, useSelector} from 'react-redux';
 import {AppRootStateType} from './redux/store';
-import {CounterType, setCurrentCountAC, setMaxCountAC, setMinCountAC} from './redux/counterReducer';
+import {CounterType, setCurrentCountAC, setMaxCountAC, setMinCountAC, toggleEditModeAC} from './redux/counterReducer';
 
 function App() {
-    const counter = useSelector<AppRootStateType,CounterType>(state=>state.counter)
+
+    const {minCount,maxCount,currentCount,editMode} = useSelector<AppRootStateType,CounterType>(state=>state.counter)
+
     const dispatch = useDispatch()
 
-    const [minCount, setMinCount] = useState<number>(0)
-    const [maxCount, setMaxCount] = useState<number>(5)
-    const [count, setCount] = useState<number>(minCount)
-    const [editMode, setEditMode] = useState<boolean>(false)
     let infoMessage = '';
 
     useEffect(() => {
@@ -26,26 +24,15 @@ function App() {
         min && dispatch(setCurrentCountAC(+min))
     }, [])
 
-
-    // const seterMaxCount = (newValue: number) => {
-    //     setMaxCount(newValue);
-    //     setEditMode(true);
-    // }
-
-    // const seterMinCount = (newValue: number) => {
-    //     setMinCount(newValue);
-    //     setEditMode(true);
-    // }
-
     const setCounter = () => {
-        setCount(minCount);
-        setEditMode(false)
+        dispatch(setCurrentCountAC(minCount))
+        dispatch(toggleEditModeAC(false))
         localStorage.setItem('minValue', JSON.stringify(minCount))
         localStorage.setItem('maxValue', JSON.stringify(maxCount))
     }
 
-    let disabledInc = (count >= maxCount) || editMode;
-    let disabledReset = (count <= minCount) || editMode;
+    let disabledInc = (currentCount >= maxCount) || editMode;
+    let disabledReset = (currentCount <= minCount) || editMode;
 
     if (editMode) {
         infoMessage = 'press set'
@@ -57,13 +44,11 @@ function App() {
     return (
         <div className={classes.App}>
             <CounterSettings
-                minCount={minCount}
-                maxCount={maxCount}
                 setCounter={setCounter}
                 disableButtonSet={!editMode}
             />
             <CounterDisplay
-                count={count}
+                count={currentCount}
                 maxCount={maxCount}
                 infoMessage={infoMessage}
                 disabledInc={disabledInc}
