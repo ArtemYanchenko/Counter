@@ -10,26 +10,22 @@ import {AppRootStateType} from '../../redux/store';
 
 type PropsType = {
     setCounter: () => void
-    // disableButtonSet: boolean
 }
 
 const CounterSettings: React.FC<PropsType> = (
     {
         setCounter,
-        // disableButtonSet,
     }) => {
 
     const dispatch = useDispatch()
     const {
         minCount,
         maxCount,
-        currentCount,
         editMode
     } = useSelector<AppRootStateType, CounterType>(state => state.counter)
 
 
     const returnErrorTrue = () => {
-        // editMode = true;
         if (editMode) {
             dispatch(toggleEditModeAC(false))
         }

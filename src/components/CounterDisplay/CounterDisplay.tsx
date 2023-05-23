@@ -8,17 +8,12 @@ import {AppRootStateType} from '../../redux/store';
 
 type PropsType = {
     infoMessage:string
-    disabledInc:boolean
-    disabledReset:boolean
-
 }
 
 
 const CounterDisplay: FC<PropsType> = (
     {
         infoMessage,
-        disabledInc,
-        disabledReset,
     }) => {
 
     const dispatch = useDispatch()
@@ -29,6 +24,12 @@ const CounterDisplay: FC<PropsType> = (
         editMode
     } = useSelector<AppRootStateType,CounterType>(state => state.counter)
 
+    const conditionValue = (value:number):boolean => {
+        return (currentCount >= value || maxCount < 0 || minCount < 0 || maxCount <= minCount)
+    }
+
+    let disabledInc = conditionValue(maxCount) || editMode;
+    let disabledReset = conditionValue(minCount) || editMode;
 
     const incrementCount = () => {dispatch(incrementCountAC())}
     const resetCount = () => {dispatch(resetCountAC())}
