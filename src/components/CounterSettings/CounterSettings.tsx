@@ -3,13 +3,13 @@ import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
 import SuperButton from '../SuperButton';
 import {createDiffieHellman} from 'crypto';
+import {useDispatch} from 'react-redux';
+import {setMaxCountAC, setMinCountAC, toggleEditModeAC} from '../../redux/counterReducer';
 
 
 type PropsType = {
     minCount: number
     maxCount: number
-    seterMinCount: (newValue: number) => void
-    seterMaxCount: (newValue: number) => void
     setCounter: () => void
     disableButtonSet: boolean
 }
@@ -18,29 +18,11 @@ const CounterSettings: React.FC<PropsType> = (
     {
         minCount,
         maxCount,
-        seterMinCount,
-        seterMaxCount,
         setCounter,
         disableButtonSet,
     }) => {
 
-    let errorMin = false;
-    let errorMax = false
-
-
-    // if (minCount >= maxCount) {
-    //     errorMin = true;
-    //     errorMax = true;
-    //     disableButtonSet = true;
-    // }
-    // if (maxCount < 0) {
-    //     errorMax = true;
-    //     disableButtonSet = true;
-    // }
-    // if (minCount < 0) {
-    //     errorMin = true;
-    //     disableButtonSet = true;
-    // }
+    const dispatch = useDispatch()
 
     const returnErrorTrue = () => {
         disableButtonSet = true;
@@ -51,7 +33,7 @@ const CounterSettings: React.FC<PropsType> = (
 
         if (Array.isArray(value)) {
             if (value[0] >= value[1]) {
-               return returnErrorTrue()
+                return returnErrorTrue()
             }
         }
         if (value < 0) {
@@ -60,24 +42,27 @@ const CounterSettings: React.FC<PropsType> = (
         return false
     }
 
-    const seterMaxCountHandler = (newValue: number) => {
-        seterMaxCount(newValue);
+    const seterMaxCount = (newValue: number) => {
+        dispatch(setMaxCountAC(newValue))
+        dispatch(toggleEditModeAC(true))
     }
-    const seterMinCountHandler = (newValue: number) => {
-        seterMinCount(newValue);
+
+    const seterMinCount = (newValue: number) => {
+        dispatch(setMinCountAC(newValue))
+        dispatch(toggleEditModeAC(true))
     }
 
     return (
         <div className={classes.counterWrapper}>
             <SuperInput name="max value"
                         value={maxCount}
-                        callBack={seterMaxCountHandler}
+                        callBack={seterMaxCount}
                         error={checkInputError(maxCount) || checkInputError([minCount, maxCount])}
             />
 
             <SuperInput name="min value"
                         value={minCount}
-                        callBack={seterMinCountHandler}
+                        callBack={seterMinCount}
                         error={checkInputError(minCount) || checkInputError([minCount, maxCount])}
             />
 

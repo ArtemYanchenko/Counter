@@ -2,13 +2,13 @@ import React, {FC} from 'react';
 import classes from '../../App.module.css';
 import Display from './Display';
 import SuperButton from '../SuperButton';
+import {useDispatch} from 'react-redux';
+import {incrementCountAC, resetCountAC} from '../../redux/counterReducer';
 
 type PropsType = {
     count:number
     maxCount:number
     infoMessage:string
-    incrementCount: () => void
-    resetCount: () => void
     disabledInc:boolean
     disabledReset:boolean
 
@@ -20,11 +20,15 @@ const CounterDisplay: FC<PropsType> = (
         count,
         maxCount,
         infoMessage,
-        incrementCount,
-        resetCount,
         disabledInc,
         disabledReset,
     }) => {
+
+    const dispatch = useDispatch()
+
+    const incrementCount = () => {dispatch(incrementCountAC())}
+    const resetCount = () => {dispatch(resetCountAC())}
+
     return (
         <div className={classes.counterWrapper}>
             <Display count={count}
