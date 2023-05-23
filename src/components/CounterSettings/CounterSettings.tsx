@@ -10,26 +10,33 @@ import {AppRootStateType} from '../../redux/store';
 
 type PropsType = {
     setCounter: () => void
-    disableButtonSet: boolean
+    // disableButtonSet: boolean
 }
 
 const CounterSettings: React.FC<PropsType> = (
     {
         setCounter,
-        disableButtonSet,
+        // disableButtonSet,
     }) => {
 
     const dispatch = useDispatch()
-    const counter = useSelector<AppRootStateType,CounterType>(state => state.counter)
+    const {
+        minCount,
+        maxCount,
+        currentCount,
+        editMode
+    } = useSelector<AppRootStateType, CounterType>(state => state.counter)
 
 
     const returnErrorTrue = () => {
-        disableButtonSet = true;
+        // editMode = true;
+        if (editMode) {
+            dispatch(toggleEditModeAC(false))
+        }
         return true
     }
 
     const checkInputError = (value: number | number[]) => {
-
         if (Array.isArray(value)) {
             if (value[0] >= value[1]) {
                 return returnErrorTrue()
@@ -54,23 +61,21 @@ const CounterSettings: React.FC<PropsType> = (
     return (
         <div className={classes.counterWrapper}>
             <SuperInput name="max value"
-                        value={counter.maxCount}
+                        value={maxCount}
                         callBack={seterMaxCount}
-                        error={checkInputError(counter.maxCount) || checkInputError([counter.minCount, counter.maxCount])}
+                        error={checkInputError(maxCount) || checkInputError([minCount, maxCount])}
             />
 
             <SuperInput name="min value"
-                        value={counter.minCount}
+                        value={minCount}
                         callBack={seterMinCount}
-                        error={checkInputError(counter.minCount) || checkInputError([counter.minCount, counter.maxCount])}
+                        error={checkInputError(minCount) || checkInputError([minCount, maxCount])}
             />
 
             <div className={classes.buttonWrapper}>
                 <SuperButton name="set"
-                             disabled={disableButtonSet}
-                             callBack={() => {
-                                 setCounter()
-                             }}
+                             disabled={!editMode}
+                             callBack={setCounter}
                 />
             </div>
         </div>
