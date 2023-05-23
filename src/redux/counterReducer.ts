@@ -2,21 +2,19 @@ export type CounterType = {
     minCount: number
     maxCount: number
     currentCount: number
-    editMode: boolean
+
 }
 
 const initialState: CounterType = {
     minCount: 0,
     maxCount: 5,
     currentCount: 0,
-    editMode: false
 }
 
 type ActionsType = IncrementCountACType
     | ResetCountACType
     | SetMinCountACType
     | SetMaxCountACType
-    | ToggleEditModeACType
     | SetCurrentCountACType
 
 export const counterReducer = (state: CounterType = initialState, action: ActionsType): CounterType => {
@@ -36,9 +34,7 @@ export const counterReducer = (state: CounterType = initialState, action: Action
         case 'SET-CURRENT-COUNT':{
             return {...state,currentCount:action.payload.newValue}
         }
-        case 'TOGGLE-EDIT-MODE':{
-            return {...state,editMode:action.payload.newValue}
-        }
+
         default: {
             return state;
         }
@@ -89,15 +85,7 @@ export const setCurrentCountAC = (newValue: number) => {
     } as const
 }
 
-type ToggleEditModeACType = ReturnType<typeof toggleEditModeAC>
-export const toggleEditModeAC = (newValue: boolean) => {
-    return {
-        type: 'TOGGLE-EDIT-MODE',
-        payload: {
-            newValue
-        }
-    } as const
-}
+
 
 
 

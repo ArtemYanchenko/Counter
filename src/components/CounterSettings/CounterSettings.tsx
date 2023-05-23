@@ -1,29 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC} from 'react';
 import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
 import SuperButton from '../SuperButton';
-import {createDiffieHellman} from 'crypto';
 import {useDispatch, useSelector} from 'react-redux';
-import {CounterType, setMaxCountAC, setMinCountAC, toggleEditModeAC} from '../../redux/counterReducer';
+import {CounterType, setCurrentCountAC, setMaxCountAC, setMinCountAC} from '../../redux/counterReducer';
 import {AppRootStateType} from '../../redux/store';
+import {setInfoMessageAC, SettingType, toggleEditModeAC} from '../../redux/settingsReducer';
 
 
-type PropsType = {
-    setCounter: () => void
-}
-
-const CounterSettings: React.FC<PropsType> = (
-    {
-        setCounter,
-    }) => {
-
+const CounterSettings: FC = () => {
     const dispatch = useDispatch()
-    const {
-        minCount,
-        maxCount,
-        editMode
-    } = useSelector<AppRootStateType, CounterType>(state => state.counter)
+    const {minCount, maxCount,} = useSelector<AppRootStateType, CounterType>(state => state.counter)
 
+    const {editMode} = useSelector<AppRootStateType, SettingType>(state => state.settings)
 
     const returnErrorTrue = () => {
         if (editMode) {
@@ -52,6 +41,14 @@ const CounterSettings: React.FC<PropsType> = (
     const seterMinCount = (newValue: number) => {
         dispatch(setMinCountAC(newValue))
         dispatch(toggleEditModeAC(true))
+    }
+
+    const setCounter = () => {
+        dispatch(setCurrentCountAC(minCount))
+        dispatch(toggleEditModeAC(false))
+        dispatch(setInfoMessageAC(''))
+        localStorage.setItem('minValue', JSON.stringify(minCount))
+        localStorage.setItem('maxValue', JSON.stringify(maxCount))
     }
 
     return (

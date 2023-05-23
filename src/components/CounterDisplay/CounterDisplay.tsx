@@ -5,34 +5,35 @@ import SuperButton from '../SuperButton';
 import {useDispatch, useSelector} from 'react-redux';
 import {CounterType, incrementCountAC, resetCountAC} from '../../redux/counterReducer';
 import {AppRootStateType} from '../../redux/store';
+import {setInfoMessageAC, SettingType} from '../../redux/settingsReducer';
 
-type PropsType = {
-    infoMessage:string
-}
-
-
-const CounterDisplay: FC<PropsType> = (
-    {
-        infoMessage,
-    }) => {
-
+const CounterDisplay: FC = () => {
     const dispatch = useDispatch()
     const {
         minCount,
         maxCount,
         currentCount,
-        editMode
-    } = useSelector<AppRootStateType,CounterType>(state => state.counter)
+    } = useSelector<AppRootStateType, CounterType>(state => state.counter)
 
-    const conditionValue = (value:number):boolean => {
-        return (currentCount >= value || maxCount < 0 || minCount < 0 || maxCount <= minCount)
+    const {editMode, infoMessage} = useSelector<AppRootStateType, SettingType>(state => state.settings)
+
+
+    const conditionValue = (): boolean => {
+        return (maxCount < 0 || minCount < 0 || maxCount <= minCount)
     }
 
-    let disabledInc = conditionValue(maxCount) || editMode;
-    let disabledReset = conditionValue(minCount) || editMode;
+    let disabledInc = currentCount >= maxCount || conditionValue() || editMode;
+    let disabledReset = currentCount <= minCount || conditionValue() || editMode;
 
     const incrementCount = () => {dispatch(incrementCountAC())}
     const resetCount = () => {dispatch(resetCountAC())}
+
+    if (editMode && infoMessage !== 'press set') {
+        dispatch(setInfoMessageAC('press set'))
+    }
+    if ((minCount >= maxCount || minCount < 0 || maxCount < 0) && infoMessage !== 'incorrect range!') {
+        dispatch(setInfoMessageAC('incorrect range!'))
+    }
 
     return (
         <div className={classes.counterWrapper}>
@@ -42,7 +43,7 @@ const CounterDisplay: FC<PropsType> = (
             />
             <div className={classes.buttonWrapper}>
                 <SuperButton
-                    name="inc"
+                    name="+1"
                     disabled={disabledInc}
                     callBack={incrementCount}
                 />

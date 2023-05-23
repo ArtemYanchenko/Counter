@@ -1,22 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import classes from './App.module.css'
 import CounterSettings from './components/CounterSettings/CounterSettings';
 import CounterDisplay from './components/CounterDisplay/CounterDisplay';
-import {useDispatch, useSelector} from 'react-redux';
-import {AppRootStateType} from './redux/store';
-import {CounterType, setCurrentCountAC, setMaxCountAC, setMinCountAC, toggleEditModeAC} from './redux/counterReducer';
+import {useDispatch} from 'react-redux';
+import {setCurrentCountAC, setMaxCountAC, setMinCountAC} from './redux/counterReducer';
 
 function App() {
 
-    const {
-        minCount,
-        maxCount,
-        editMode
-    } = useSelector<AppRootStateType, CounterType>(state => state.counter)
-
     const dispatch = useDispatch()
-
-    let infoMessage = '';
 
     useEffect(() => {
         const min = localStorage.getItem('minValue')
@@ -28,28 +19,10 @@ function App() {
         min && dispatch(setCurrentCountAC(+min))
     }, [dispatch])
 
-    const setCounter = () => {
-        dispatch(setCurrentCountAC(minCount))
-        dispatch(toggleEditModeAC(false))
-        localStorage.setItem('minValue', JSON.stringify(minCount))
-        localStorage.setItem('maxValue', JSON.stringify(maxCount))
-    }
-
-    if (editMode) {
-        infoMessage = 'press set'
-    }
-    if (minCount >= maxCount || minCount < 0 || maxCount < 0) {
-        infoMessage = 'incorrect range!'
-    }
-
     return (
         <div className={classes.App}>
-            <CounterSettings
-                setCounter={setCounter}
-            />
-            <CounterDisplay
-                infoMessage={infoMessage}
-            />
+            <CounterSettings/>
+            <CounterDisplay/>
         </div>
     );
 }
