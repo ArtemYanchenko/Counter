@@ -1,3 +1,6 @@
+import { Dispatch } from "redux"
+import {setInfoMessageAC, toggleEditModeAC} from './settingsReducer';
+
 export type CounterType = {
     minCount: number
     maxCount: number
@@ -85,6 +88,14 @@ export const setCurrentCountAC = (newValue: number) => {
     } as const
 }
 
+
+export const setCounterTC = (minCount:number,maxCount:number) => (dispatch:Dispatch) => {
+    localStorage.setItem('minValue', JSON.stringify(minCount));
+    localStorage.setItem('maxValue', JSON.stringify(maxCount));
+    dispatch(setCurrentCountAC(minCount))
+    dispatch(toggleEditModeAC(false))
+    dispatch(setInfoMessageAC(''))
+}
 
 
 

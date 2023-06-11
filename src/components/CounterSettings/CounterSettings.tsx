@@ -3,14 +3,15 @@ import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
 import SuperButton from '../SuperButton';
 import {useDispatch, useSelector} from 'react-redux';
-import {CounterType, setCurrentCountAC, setMaxCountAC, setMinCountAC} from '../../redux/counterReducer';
+import {CounterType, setCounterTC, setCurrentCountAC, setMaxCountAC, setMinCountAC} from '../../redux/counterReducer';
 import {AppRootStateType} from '../../redux/store';
 import {setInfoMessageAC, SettingType, toggleEditModeAC} from '../../redux/settingsReducer';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 
 
 const CounterSettings: FC = () => {
-    const dispatch = useDispatch()
-    const {minCount, maxCount,} = useSelector<AppRootStateType, CounterType>(state => state.counter)
+    const dispatch = useAppDispatch()
+    const {minCount, maxCount,} = useAppSelector<CounterType>(state => state.counter)
 
     const {editMode} = useSelector<AppRootStateType, SettingType>(state => state.settings)
 
@@ -44,11 +45,7 @@ const CounterSettings: FC = () => {
     }
 
     const setCounter = () => {
-        dispatch(setCurrentCountAC(minCount))
-        dispatch(toggleEditModeAC(false))
-        dispatch(setInfoMessageAC(''))
-        localStorage.setItem('minValue', JSON.stringify(minCount))
-        localStorage.setItem('maxValue', JSON.stringify(maxCount))
+        dispatch(setCounterTC(minCount,maxCount))
     }
 
     return (
