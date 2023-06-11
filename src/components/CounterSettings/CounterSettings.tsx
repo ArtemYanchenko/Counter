@@ -1,14 +1,10 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC} from 'react';
 import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
 import SuperButton from '../SuperButton';
-import {
-    CounterType,
-    getCounterValuesTC,
-    setCounterValuesTC,
-    setMaxCountAC,
-    setMinCountAC
-} from '../../redux/counterReducer';
+import {useSelector} from 'react-redux';
+import {CounterType, setCounterValuesTC, setMaxCountAC, setMinCountAC} from '../../redux/counterReducer';
+import {AppRootStateType} from '../../redux/store';
 import {SettingType, toggleEditModeAC} from '../../redux/settingsReducer';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 
@@ -16,11 +12,8 @@ import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 const CounterSettings: FC = () => {
     const dispatch = useAppDispatch()
     const {minCount, maxCount} = useAppSelector<CounterType>(state => state.counter)
-    const editMode = useAppSelector<SettingType>(state => state.settings)
 
-    useEffect(() => {
-        dispatch(getCounterValuesTC())
-    }, [dispatch])
+    const {editMode} = useAppSelector<SettingType>(state => state.settings)
 
     const returnErrorTrue = () => {
         if (editMode) {
@@ -51,6 +44,10 @@ const CounterSettings: FC = () => {
         dispatch(toggleEditModeAC(true))
     }
 
+    const setCounter = () => {
+        dispatch(setCounterValuesTC())
+    }
+
     return (
         <div className={classes.counterWrapper}>
             <SuperInput name="max value"
@@ -68,7 +65,7 @@ const CounterSettings: FC = () => {
             <div className={classes.buttonWrapper}>
                 <SuperButton name="set"
                              disabled={!editMode}
-                             callBack={ ()=>dispatch(setCounterValuesTC())}
+                             callBack={setCounter}
                 />
             </div>
         </div>

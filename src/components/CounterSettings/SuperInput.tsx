@@ -5,7 +5,7 @@ type PropsType = {
     name:string
     value:number
     callBack:(newValue:number)=>void
-    error:boolean
+    error?:boolean
 }
 
 const SuperInput:React.FC<PropsType> = (

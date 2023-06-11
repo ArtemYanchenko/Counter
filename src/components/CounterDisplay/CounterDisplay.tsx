@@ -17,7 +17,7 @@ const CounterDisplay: FC = () => {
     } = useAppSelector<CounterType>(state => state.counter)
 
     const {editMode, infoMessage} = useSelector<AppRootStateType, SettingType>(state => state.settings)
-
+debugger
 
     const conditionValue = (): boolean => {
         return (maxCount < 0 || minCount < 0 || maxCount <= minCount)
