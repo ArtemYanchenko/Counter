@@ -1,11 +1,11 @@
-import { Dispatch } from "redux"
+import {Dispatch} from 'redux'
 import {setInfoMessageAC, toggleEditModeAC} from './settingsReducer';
+import {AppRootStateType} from './store';
 
 export type CounterType = {
     minCount: number
     maxCount: number
     currentCount: number
-
 }
 
 const initialState: CounterType = {
@@ -28,14 +28,14 @@ export const counterReducer = (state: CounterType = initialState, action: Action
         case 'RESET-COUNT': {
             return {...state, currentCount: state.minCount}
         }
-        case 'SET-MIN-COUNT':{
-            return {...state,minCount:action.payload.newValue}
+        case 'SET-MIN-COUNT': {
+            return {...state, minCount: action.payload.newValue}
         }
-        case 'SET-MAX-COUNT':{
-            return {...state,maxCount:action.payload.newValue}
+        case 'SET-MAX-COUNT': {
+            return {...state, maxCount: action.payload.newValue}
         }
-        case 'SET-CURRENT-COUNT':{
-            return {...state,currentCount:action.payload.newValue}
+        case 'SET-CURRENT-COUNT': {
+            return {...state, currentCount: action.payload.newValue}
         }
 
         default: {
@@ -89,14 +89,21 @@ export const setCurrentCountAC = (newValue: number) => {
 }
 
 
-export const setCounterTC = (minCount:number,maxCount:number) => (dispatch:Dispatch) => {
-    localStorage.setItem('minValue', JSON.stringify(minCount));
-    localStorage.setItem('maxValue', JSON.stringify(maxCount));
-    dispatch(setCurrentCountAC(minCount))
+export const setCounterValuesTC = () => (dispatch: Dispatch, getState: () => AppRootStateType) => {
+    const counter = getState().counter;
+    localStorage.setItem('minValue', JSON.stringify(counter.minCount));
+    localStorage.setItem('maxValue', JSON.stringify(counter.maxCount));
+    dispatch(setCurrentCountAC(counter.minCount))
     dispatch(toggleEditModeAC(false))
     dispatch(setInfoMessageAC(''))
 }
 
+export const getCounterValuesTC = () => (dispatch: Dispatch) => {
+    const min = localStorage.getItem('minValue') || '0'
+    const max = localStorage.getItem('maxValue') || '5'
+        dispatch(setMinCountAC(+min))
+        dispatch(setMaxCountAC(+max))
+}
 
 
 

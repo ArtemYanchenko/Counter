@@ -3,7 +3,7 @@ import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
 import SuperButton from '../SuperButton';
 import {useDispatch, useSelector} from 'react-redux';
-import {CounterType, setCounterTC, setCurrentCountAC, setMaxCountAC, setMinCountAC} from '../../redux/counterReducer';
+import {CounterType, setCounterValuesTC, setCurrentCountAC, setMaxCountAC, setMinCountAC} from '../../redux/counterReducer';
 import {AppRootStateType} from '../../redux/store';
 import {setInfoMessageAC, SettingType, toggleEditModeAC} from '../../redux/settingsReducer';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
@@ -45,7 +45,7 @@ const CounterSettings: FC = () => {
     }
 
     const setCounter = () => {
-        dispatch(setCounterTC(minCount,maxCount))
+        dispatch(setCounterValuesTC())
     }
 
     return (
