@@ -2,18 +2,19 @@ import React, {FC} from 'react';
 import classes from '../../App.module.css';
 import Display from './Display';
 import SuperButton from '../SuperButton';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import {CounterType, incrementCountAC, resetCountAC} from '../../redux/counterReducer';
 import {AppRootStateType} from '../../redux/store';
 import {setInfoMessageAC, SettingType} from '../../redux/settingsReducer';
+import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 
 const CounterDisplay: FC = () => {
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const {
         minCount,
         maxCount,
         currentCount,
-    } = useSelector<AppRootStateType, CounterType>(state => state.counter)
+    } = useAppSelector<CounterType>(state => state.counter)
 
     const {editMode, infoMessage} = useSelector<AppRootStateType, SettingType>(state => state.settings)
 
