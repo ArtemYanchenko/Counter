@@ -1,9 +1,16 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect} from 'react';
 import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
 import SuperButton from '../SuperButton';
 import {useDispatch, useSelector} from 'react-redux';
-import {CounterType, setCounterValuesTC, setCurrentCountAC, setMaxCountAC, setMinCountAC} from '../../redux/counterReducer';
+import {
+    CounterType,
+    getCounterValuesTC,
+    setCounterValuesTC,
+    setCurrentCountAC,
+    setMaxCountAC,
+    setMinCountAC
+} from '../../redux/counterReducer';
 import {AppRootStateType} from '../../redux/store';
 import {setInfoMessageAC, SettingType, toggleEditModeAC} from '../../redux/settingsReducer';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
@@ -12,6 +19,9 @@ import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 const CounterSettings: FC = () => {
     const dispatch = useAppDispatch()
     const {minCount, maxCount,} = useAppSelector<CounterType>(state => state.counter)
+    useEffect(() => {
+        dispatch(getCounterValuesTC())
+    }, [dispatch])
 
     const {editMode} = useSelector<AppRootStateType, SettingType>(state => state.settings)
 
