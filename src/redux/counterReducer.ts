@@ -2,23 +2,11 @@ import {Dispatch} from 'redux'
 import {setInfoMessageAC, toggleEditModeAC} from './settingsReducer';
 import {AppRootStateType} from './store';
 
-export type CounterType = {
-    minCount: number
-    maxCount: number
-    currentCount: number
-}
-
 const initialState: CounterType = {
     minCount: 0,
     maxCount: 5,
     currentCount: 0,
 }
-
-type ActionsType = IncrementCountACType
-    | ResetCountACType
-    | SetMinCountACType
-    | SetMaxCountACType
-    | SetCurrentCountACType
 
 export const counterReducer = (state: CounterType = initialState, action: ActionsType): CounterType => {
     switch (action.type) {
@@ -29,13 +17,13 @@ export const counterReducer = (state: CounterType = initialState, action: Action
             return {...state, currentCount: state.minCount}
         }
         case 'SET-MIN-COUNT': {
-            return {...state, minCount: action.payload.newValue}
+            return {...state, minCount: action.newValue}
         }
         case 'SET-MAX-COUNT': {
-            return {...state, maxCount: action.payload.newValue}
+            return {...state, maxCount: action.newValue}
         }
         case 'SET-CURRENT-COUNT': {
-            return {...state, currentCount: action.payload.newValue}
+            return {...state, currentCount: action.newValue}
         }
 
         default: {
@@ -44,51 +32,34 @@ export const counterReducer = (state: CounterType = initialState, action: Action
     }
 }
 
-type IncrementCountACType = ReturnType<typeof incrementCountAC>
-export const incrementCountAC = () => {
-    return {
-        type: 'INCREMENT-COUNT'
-    } as const
-}
+//actions
+export const incrementCountAC = () => ({
+    type: 'INCREMENT-COUNT'
+} as const)
 
-type ResetCountACType = ReturnType<typeof resetCountAC>
-export const resetCountAC = () => {
-    return {
-        type: 'RESET-COUNT'
-    } as const
-}
+export const resetCountAC = () => ({
+    type: 'RESET-COUNT'
+} as const)
 
-type SetMinCountACType = ReturnType<typeof setMinCountAC>
-export const setMinCountAC = (newValue: number) => {
-    return {
-        type: 'SET-MIN-COUNT',
-        payload: {
-            newValue
-        }
-    } as const
-}
+export const setMinCountAC = (newValue: number) => ({
+    type: 'SET-MIN-COUNT',
+    newValue
+} as const)
 
-type SetMaxCountACType = ReturnType<typeof setMaxCountAC>
-export const setMaxCountAC = (newValue: number) => {
-    return {
-        type: 'SET-MAX-COUNT',
-        payload: {
-            newValue
-        }
-    } as const
-}
+export const setMaxCountAC = (newValue: number) => ({
+    type: 'SET-MAX-COUNT',
+    newValue
+} as const)
 
-type SetCurrentCountACType = ReturnType<typeof setCurrentCountAC>
-export const setCurrentCountAC = (newValue: number) => {
-    return {
-        type: 'SET-CURRENT-COUNT',
-        payload: {
-            newValue
-        }
-    } as const
-}
+export const setCurrentCountAC = (newValue: number) => ({
+    type: 'SET-CURRENT-COUNT',
+    newValue
+} as const)
+
+export const setValuesCountAC = (min: number, max: number) => ({type: 'SEN-VALUES-COUNT', min, max} as const)
 
 
+//thunks
 export const setCounterValuesTC = () => (dispatch: Dispatch, getState: () => AppRootStateType) => {
     const counter = getState().counter;
     localStorage.setItem('minValue', JSON.stringify(counter.minCount));
@@ -101,9 +72,24 @@ export const setCounterValuesTC = () => (dispatch: Dispatch, getState: () => App
 export const getCounterValuesTC = () => (dispatch: Dispatch) => {
     const min = localStorage.getItem('minValue') || '0'
     const max = localStorage.getItem('maxValue') || '5'
-        dispatch(setMinCountAC(+min))
-        dispatch(setMaxCountAC(+max))
+    dispatch(setMinCountAC(+min))
+    dispatch(setMaxCountAC(+max))
 }
+
+//types
+export type CounterType = {
+    minCount: number
+    maxCount: number
+    currentCount: number
+}
+
+type ActionsType =
+    | ReturnType<typeof incrementCountAC>
+    | ReturnType<typeof resetCountAC>
+    | ReturnType<typeof setMinCountAC>
+    | ReturnType<typeof setMaxCountAC>
+    | ReturnType<typeof setCurrentCountAC>
+    | ReturnType<typeof setValuesCountAC>
 
 
 

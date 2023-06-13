@@ -2,18 +2,16 @@ import React, {FC} from 'react';
 import classes from '../../App.module.css';
 import SuperInput from './SuperInput';
 import SuperButton from '../SuperButton';
-import {useSelector} from 'react-redux';
-import {CounterType, setCounterValuesTC, setMaxCountAC, setMinCountAC} from '../../redux/counterReducer';
-import {AppRootStateType} from '../../redux/store';
-import {SettingType, toggleEditModeAC} from '../../redux/settingsReducer';
+import {setCounterValuesTC, setMaxCountAC, setMinCountAC} from '../../redux/counterReducer';
+import {toggleEditModeAC} from '../../redux/settingsReducer';
 import {useAppDispatch, useAppSelector} from '../../redux/hooks';
 
 
 const CounterSettings: FC = () => {
     const dispatch = useAppDispatch()
-    const {minCount, maxCount} = useAppSelector<CounterType>(state => state.counter)
+    const {minCount, maxCount} = useAppSelector(state => state.counter)
 
-    const {editMode} = useAppSelector<SettingType>(state => state.settings)
+    const {editMode} = useAppSelector(state => state.settings)
 
     const returnErrorTrue = () => {
         if (editMode) {
@@ -55,13 +53,11 @@ const CounterSettings: FC = () => {
                         callBack={seterMaxCount}
                         error={checkInputError(maxCount) || checkInputError([minCount, maxCount])}
             />
-
             <SuperInput name="min value"
                         value={minCount}
                         callBack={seterMinCount}
                         error={checkInputError(minCount) || checkInputError([minCount, maxCount])}
             />
-
             <div className={classes.buttonWrapper}>
                 <SuperButton name="set"
                              disabled={!editMode}

@@ -1,12 +1,3 @@
-export type InfoMessageType =  '' | 'press set' | 'incorrect range!'
-
-export type SettingType = {
-    editMode: boolean
-    infoMessage: InfoMessageType
-}
-
-type ActionsType = ToggleEditModeACType | SetInfoMessageACType
-
 const initialState: SettingType = {
     editMode: false,
     infoMessage: ''
@@ -15,10 +6,10 @@ const initialState: SettingType = {
 export const settingsReducer = (state = initialState, action: ActionsType): SettingType => {
     switch (action.type) {
         case 'TOGGLE-EDIT-MODE': {
-            return {...state, editMode: action.payload.newValue}
+            return {...state, editMode: action.newValue}
         }
         case 'SET-INFO-MESSAGE': {
-            return {...state,infoMessage:action.payload.newInfoMessage}
+            return {...state, infoMessage: action.newInfoMessage}
         }
         default: {
             return state;
@@ -26,23 +17,23 @@ export const settingsReducer = (state = initialState, action: ActionsType): Sett
     }
 }
 
+//actions
+export const toggleEditModeAC = (newValue: boolean) => ({
+    type: 'TOGGLE-EDIT-MODE',
+    newValue
+} as const)
 
-type ToggleEditModeACType = ReturnType<typeof toggleEditModeAC>
-export const toggleEditModeAC = (newValue: boolean) => {
-    return {
-        type: 'TOGGLE-EDIT-MODE',
-        payload: {
-            newValue
-        }
-    } as const
-}
+export const setInfoMessageAC = (newInfoMessage: InfoMessageType) => ({
+    type: 'SET-INFO-MESSAGE',
+    newInfoMessage
+} as const)
 
-type SetInfoMessageACType = ReturnType<typeof setInfoMessageAC>
-export const setInfoMessageAC = (newInfoMessage:InfoMessageType) => {
-    return {
-        type: 'SET-INFO-MESSAGE',
-        payload:{
-            newInfoMessage
-        }
-    } as const
+//types
+export type SettingType = {
+    editMode: boolean
+    infoMessage: InfoMessageType
 }
+export type InfoMessageType = '' | 'press set' | 'incorrect range!'
+type ActionsType =
+    | ReturnType<typeof toggleEditModeAC>
+    | ReturnType<typeof setInfoMessageAC>
